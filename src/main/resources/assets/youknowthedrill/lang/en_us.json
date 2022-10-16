@@ -1,0 +1,25 @@
+{
+    "itemGroup.yktdtab": "You Know The Drill",
+
+    "key.category.youknowthedrill.yktd": "You Know The Drill",
+    "key.youknowthedrill.tool_mode": "Change Tool Mode",
+
+    "info.youknowthedrill.silk": "Silk Touch Mode",
+    "info.youknowthedrill.fortune": "Fortune Mode",
+    "info.youknowthedrill.overclocked": "Overclocked",
+    "info.youknowthedrill.tooltip_press": "Press ",
+    "info.youknowthedrill.tooltip_modes": " to cycle through the available modes",
+    "info.youknowthedrill.tooltip_overclocked": " to toggle the tool's overclocking",
+    "info.youknowthedrill.while_shifting": " while crouching",
+
+    "item.youknowthedrill.iron_drill": "Iron Drill",
+    "item.youknowthedrill.diamond_drill": "Diamond Drill",
+    "item.youknowthedrill.netherite_drill": "Netherite Drill",
+
+    "item.youknowthedrill.iron_saw": "Iron Saw",
+    "item.youknowthedrill.diamond_saw": "Diamond Saw",
+    "item.youknowthedrill.netherite_saw": "Netherite Saw",
+
+    "item.youknowthedrill.echo_multitool": "Echo Multi-tool"
+
+}

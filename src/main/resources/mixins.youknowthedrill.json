@@ -1,0 +1,16 @@
+{
+    "required": true,
+    "package": "com.zeusguy.youknowthedrill.mixin",
+    "compatibilityLevel": "JAVA_17",
+    "minVersion": "0.8",
+    "mixins": [
+      "PlayerHoldItemRenderer"
+    ],
+    "client": [
+      
+    ],
+    "injectors": {
+      "defaultRequire": 1
+    },
+    "refmap": "youknowthedrill.refmap.json"
+  }
