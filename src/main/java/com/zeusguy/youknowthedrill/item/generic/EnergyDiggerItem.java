@@ -17,6 +17,7 @@ import com.mojang.datafixers.util.Pair;
 import com.zeusguy.youknowthedrill.YouKnowTheDrill;
 import com.zeusguy.youknowthedrill.config.ClientConfig;
 import com.zeusguy.youknowthedrill.config.ServerConfig;
+import com.zeusguy.youknowthedrill.registry.YKTDCreativeModeTab;
 import com.zeusguy.youknowthedrill.util.KeyBinding;
 import com.zeusguy.zglib.item.EnergyItem;
 
@@ -88,7 +89,7 @@ public class EnergyDiggerItem extends EnergyItem {
     protected ServerConfig.DiggerItemConfig config;
 
     EnergyDiggerItem(Properties properties, ServerConfig.DiggerItemConfig config) {
-        super(properties);
+        super(properties.tab(YKTDCreativeModeTab.YKTD_TAB));
         this.config = config;
     }
 

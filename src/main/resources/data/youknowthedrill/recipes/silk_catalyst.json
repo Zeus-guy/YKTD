@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " D ",
+        " S ",
+        " Q "
+    ],
+    "key": {
+        "D": {
+            "tag": "forge:storage_blocks/diamond"
+        },
+        "S": {
+            "item": "minecraft:slime_block"
+        },
+        "Q": {
+            "tag": "forge:storage_blocks/quartz"
+        }
+    },
+    "result": {
+        "item": "youknowthedrill:silk_catalyst",
+        "count": 1
+    }
+}

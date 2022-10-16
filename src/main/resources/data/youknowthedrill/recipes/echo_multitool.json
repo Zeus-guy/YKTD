@@ -1,0 +1,32 @@
+{
+    "type": "zglib:energy_keeping_recipe",
+    "pattern": [
+        "EEE",
+        "DHS",
+        "BNB"
+    ],
+    "key": {
+        "E": {
+            "item": "minecraft:echo_shard"
+        },
+        "D": {
+            "item": "youknowthedrill:netherite_drill"
+        },
+        "H": {
+            "item": "minecraft:heart_of_the_sea"
+        },
+        "S": {
+            "item": "youknowthedrill:netherite_saw"
+        },
+        "B": {
+            "item": "minecraft:shulker_shell"
+        },
+        "N": {
+            "item": "minecraft:nether_star"
+        }
+    },
+    "result": {
+        "item": "youknowthedrill:echo_multitool",
+        "count": 1
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "type": "zglib:energy_keeping_recipe",
+    "pattern": [
+        " SN",
+        "BXF",
+        "EB "
+    ],
+    "key": {
+        "N": {
+            "tag": "forge:ingots/netherite"
+        },
+        "X": {
+            "item": "youknowthedrill:diamond_saw"
+        },
+        "S": {
+            "item": "youknowthedrill:silk_catalyst"
+        },
+        "F": {
+            "item": "youknowthedrill:fortune_catalyst"
+        },
+        "B": {
+            "item": "minecraft:gilded_blackstone"
+        },
+        "E": {
+            "item": "minecraft:ender_eye"
+        }
+    },
+    "result": {
+        "item": "youknowthedrill:netherite_saw",
+        "count": 1
+    }
+}

@@ -20,6 +20,9 @@
     "item.youknowthedrill.diamond_saw": "Diamond Saw",
     "item.youknowthedrill.netherite_saw": "Netherite Saw",
 
-    "item.youknowthedrill.echo_multitool": "Echo Multi-tool"
+    "item.youknowthedrill.echo_multitool": "Echo Multi-tool",
+    
+    "item.youknowthedrill.silk_catalyst": "Silk Touch Catalyst",
+    "item.youknowthedrill.fortune_catalyst": "Fortune Catalyst"
 
 }

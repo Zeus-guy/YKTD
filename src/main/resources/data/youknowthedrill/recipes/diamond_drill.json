@@ -1,0 +1,26 @@
+{
+    "type": "zglib:energy_keeping_recipe",
+    "pattern": [
+        " D ",
+        "DXD",
+        "BAB"
+    ],
+    "key": {
+        "D": {
+            "tag": "forge:gems/diamond"
+        },
+        "X": {
+            "item": "youknowthedrill:iron_drill"
+        },
+        "B": {
+            "tag": "forge:storage_blocks/amethyst"
+        },
+        "A": {
+            "tag": "forge:gems/amethyst"
+        }
+    },
+    "result": {
+        "item": "youknowthedrill:diamond_drill",
+        "count": 1
+    }
+}

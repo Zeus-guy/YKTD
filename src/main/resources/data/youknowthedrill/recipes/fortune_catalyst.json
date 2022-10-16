@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " D ",
+        " L ",
+        " G "
+    ],
+    "key": {
+        "D": {
+            "tag": "forge:storage_blocks/diamond"
+        },
+        "L": {
+            "tag": "forge:storage_blocks/lapis"
+        },
+        "G": {
+            "tag": "forge:storage_blocks/gold"
+        }
+    },
+    "result": {
+        "item": "youknowthedrill:fortune_catalyst",
+        "count": 1
+    }
+}
