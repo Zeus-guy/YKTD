@@ -15,6 +15,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.mojang.datafixers.util.Pair;
 import com.zeusguy.youknowthedrill.YouKnowTheDrill;
+import com.zeusguy.youknowthedrill.config.ClientConfig;
 import com.zeusguy.youknowthedrill.config.ServerConfig;
 import com.zeusguy.youknowthedrill.registry.YKTDCreativeModeTab;
 import com.zeusguy.youknowthedrill.util.KeyBinding;
@@ -318,10 +319,10 @@ public class EnergyDiggerItem extends EnergyItem {
         };
     }
 
-    public void changeMode(ItemStack stack, Player player) {
+    public void changeMode(ItemStack stack, Player player, boolean isConfigReversed) {
         boolean condition = player.isCrouching();
-        /*if (ClientConfig.isKeyReversed.get()) //I mean, this is client-side, so it works. Not the next one, tough.
-            condition = !condition;*/
+        if (isConfigReversed)
+            condition = !condition;
         if (condition) {
             changeOverclockMode(stack);
         } else {
@@ -484,8 +485,8 @@ public class EnergyDiggerItem extends EnergyItem {
 
     private MutableComponent appendToolKey(MutableComponent component, boolean defaultCrouch) {
         boolean condition = defaultCrouch;
-        /*if (ClientConfig.isKeyReversed.get()) //Only works on singleplayer, that's no good
-            condition = !condition;*/
+        if (ClientConfig.isKeyReversed.get())
+            condition = !condition;
         component.append(((MutableComponent)KeyBinding.CHANGE_TOOL_MODE_KEY.getKey().getDisplayName()).withStyle(ChatFormatting.GRAY));
         if (condition) {
             component.append(Component.translatable("info." + YouKnowTheDrill.MODID + ".while_shifting").withStyle(ChatFormatting.GRAY));
