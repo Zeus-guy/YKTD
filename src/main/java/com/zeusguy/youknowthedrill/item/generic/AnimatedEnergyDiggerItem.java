@@ -61,6 +61,7 @@ public class AnimatedEnergyDiggerItem extends EnergyDiggerItem implements IAnima
 	public void registerControllers(AnimationData data) {
         AnimationController<?> controller = new AnimationController<AnimatedEnergyDiggerItem>(this, controllerName, 1, this::predicate);
 		data.addAnimationController(controller);
+        data.setResetSpeedInTicks(8f);
 	}
 
 	@Override
@@ -86,7 +87,7 @@ public class AnimatedEnergyDiggerItem extends EnergyDiggerItem implements IAnima
             GeckoLibNetwork.syncAnimation(target, this, id, 1);
         }
         CompoundTag tag = stack.getOrCreateTag();
-        tag.putLong(ANIMATION_TAG, entity.level.getGameTime() + 10);
+        tag.putLong(ANIMATION_TAG, entity.level.getGameTime() + 11);
 
         return true;
     }
