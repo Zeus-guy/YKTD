@@ -22,6 +22,7 @@ import com.zeusguy.youknowthedrill.util.KeyBinding;
 import com.zeusguy.zglib.item.EnergyItem;
 
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -453,11 +454,11 @@ public class EnergyDiggerItem extends EnergyItem {
         DrillMode mode = getMode(stack);
 
         if (mode != DrillMode.NONE) {
-            tooltip.add(Component.translatable("info." + YouKnowTheDrill.MODID + "." + mode.getTag()));
+            tooltip.add(Component.translatable("info." + YouKnowTheDrill.MODID + "." + mode.getTag()).withStyle(ChatFormatting.DARK_AQUA));
         }
 
         if (isOverclocked(stack)) {
-            tooltip.add(Component.translatable("info." + YouKnowTheDrill.MODID + ".overclocked"));
+            tooltip.add(Component.translatable("info." + YouKnowTheDrill.MODID + ".overclocked").withStyle(ChatFormatting.RED));
         }
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
 
@@ -469,14 +470,14 @@ public class EnergyDiggerItem extends EnergyItem {
 
         if (AVAILABLE_MODES.size() > 0) {
             extraTooltips.add(
-                    appendToolKey(Component.translatable("info." + YouKnowTheDrill.MODID + ".tooltip_press"), false)
-                            .append(Component.translatable("info." + YouKnowTheDrill.MODID + ".tooltip_modes")));
+                    appendToolKey(Component.translatable("info." + YouKnowTheDrill.MODID + ".tooltip_press").withStyle(ChatFormatting.GRAY), false)
+                            .append(Component.translatable("info." + YouKnowTheDrill.MODID + ".tooltip_modes").withStyle(ChatFormatting.GRAY)));
         }
 
         if (canOverclock) {
             extraTooltips
-                    .add(appendToolKey(Component.translatable("info." + YouKnowTheDrill.MODID + ".tooltip_press"), true)
-                            .append(Component.translatable("info." + YouKnowTheDrill.MODID + ".tooltip_overclocked")));
+                    .add(appendToolKey(Component.translatable("info." + YouKnowTheDrill.MODID + ".tooltip_press").withStyle(ChatFormatting.GRAY), true)
+                            .append(Component.translatable("info." + YouKnowTheDrill.MODID + ".tooltip_overclocked").withStyle(ChatFormatting.GRAY)));
         }
 
         return extraTooltips;
@@ -486,9 +487,9 @@ public class EnergyDiggerItem extends EnergyItem {
         boolean condition = defaultCrouch;
         if (ClientConfig.isKeyReversed.get())
             condition = !condition;
-        component.append(KeyBinding.CHANGE_TOOL_MODE_KEY.getKey().getDisplayName());
+        component.append(((MutableComponent)KeyBinding.CHANGE_TOOL_MODE_KEY.getKey().getDisplayName()).withStyle(ChatFormatting.GRAY));
         if (condition) {
-            component.append(Component.translatable("info." + YouKnowTheDrill.MODID + ".while_shifting"));
+            component.append(Component.translatable("info." + YouKnowTheDrill.MODID + ".while_shifting").withStyle(ChatFormatting.GRAY));
         }
         return component;
     }
