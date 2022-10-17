@@ -1,6 +1,5 @@
 package com.zeusguy.youknowthedrill;
 
-import com.zeusguy.youknowthedrill.config.ClientConfig;
 import com.zeusguy.youknowthedrill.config.ServerConfig;
 import com.zeusguy.youknowthedrill.networking.YKTDMessages;
 import com.zeusguy.youknowthedrill.registry.YKTDItems;
@@ -22,7 +21,8 @@ public class YouKnowTheDrill {
 
     public YouKnowTheDrill() {
 
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.GENERAL_SPEC, "yktd-client.toml");
+        //Not working properly
+        //ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.GENERAL_SPEC, "yktd-client.toml");
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ServerConfig.GENERAL_SPEC, "yktd-server.toml");
         
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
