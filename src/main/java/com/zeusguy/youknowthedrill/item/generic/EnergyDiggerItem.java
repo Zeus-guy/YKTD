@@ -321,6 +321,9 @@ public class EnergyDiggerItem extends EnergyItem {
 
     public void changeMode(ItemStack stack, Player player, boolean isConfigReversed) {
         boolean condition = player.isCrouching();
+
+        player.getLevel().playSound(null, player.getOnPos(), SoundEvents.STONE_BUTTON_CLICK_OFF, SoundSource.PLAYERS, 1F, (condition ? (isOverclocked(stack) ? 1 : 1.5F) : 1.2F));
+
         if (isConfigReversed)
             condition = !condition;
         if (condition) {
