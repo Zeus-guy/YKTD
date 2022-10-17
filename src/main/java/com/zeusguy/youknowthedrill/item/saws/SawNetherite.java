@@ -12,7 +12,7 @@ public class SawNetherite extends SawItem {
     }
 
     public SawNetherite(Properties properties, ServerConfig.DiggerItemConfig config) {
-        super(properties.rarity(Rarity.RARE), config);
+        super(properties.rarity(Rarity.RARE).fireResistant(), config);
         canOverclock = true;
         AVAILABLE_MODES.add(DrillMode.SILK);
         AVAILABLE_MODES.add(DrillMode.FORTUNE);
