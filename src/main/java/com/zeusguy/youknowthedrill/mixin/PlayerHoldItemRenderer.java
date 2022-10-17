@@ -20,9 +20,11 @@ public class PlayerHoldItemRenderer {
             CallbackInfoReturnable<HumanoidModel.ArmPose> callback) {
                 
         ItemStack itemstack = p_117795_.getItemInHand(p_117796_);
-        if (itemstack.getItem() instanceof AnimatedEnergyDiggerItem
-                && itemstack.getOrCreateTag().contains(AnimatedEnergyDiggerItem.ANIMATION_TAG)) {
-            callback.setReturnValue(HumanoidModel.ArmPose.CROSSBOW_HOLD);
+        if (!itemstack.isEmpty()) {
+            if (itemstack.getItem() instanceof AnimatedEnergyDiggerItem
+                    && itemstack.getOrCreateTag().contains(AnimatedEnergyDiggerItem.ANIMATION_TAG)) {
+                callback.setReturnValue(HumanoidModel.ArmPose.CROSSBOW_HOLD);
+            }
         }
 
     }

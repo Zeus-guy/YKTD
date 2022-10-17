@@ -77,11 +77,6 @@ public class AnimatedEnergyDiggerItem extends EnergyDiggerItem implements IAnima
             controller.setAnimation(new AnimationBuilder().addAnimation(animationName));
         }
 	}
-
-	@Override
-	public boolean isFoil(ItemStack stack) {
-		return false;
-	}
     
     @Override
     public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
