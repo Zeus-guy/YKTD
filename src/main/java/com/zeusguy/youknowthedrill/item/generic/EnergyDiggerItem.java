@@ -240,11 +240,6 @@ public class EnergyDiggerItem extends EnergyItem {
 
                 level.setBlock(blockpos, axeOptional.get(), 11);
                 level.gameEvent(GameEvent.BLOCK_CHANGE, blockpos, GameEvent.Context.of(player, axeOptional.get()));
-                if (player != null) {
-                    itemstack.hurtAndBreak(1, player, (p_150686_) -> {
-                        p_150686_.broadcastBreakEvent(context.getHand());
-                    });
-                }
 
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }
@@ -272,11 +267,6 @@ public class EnergyDiggerItem extends EnergyItem {
                     if (!level.isClientSide) {
                         level.setBlock(blockpos, blockstate2, 11);
                         level.gameEvent(GameEvent.BLOCK_CHANGE, blockpos, GameEvent.Context.of(player, blockstate2));
-                        if (player != null) {
-                            context.getItemInHand().hurtAndBreak(1, player, (p_43122_) -> {
-                                p_43122_.broadcastBreakEvent(context.getHand());
-                            });
-                        }
                     }
 
                     return InteractionResult.sidedSuccess(level.isClientSide);
@@ -297,11 +287,6 @@ public class EnergyDiggerItem extends EnergyItem {
                     level.playSound(player, blockpos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0F, 1.0F);
                     if (!level.isClientSide) {
                         consumer.accept(context);
-                        if (player != null) {
-                            context.getItemInHand().hurtAndBreak(1, player, (p_150845_) -> {
-                                p_150845_.broadcastBreakEvent(context.getHand());
-                            });
-                        }
                     }
                     return InteractionResult.sidedSuccess(level.isClientSide);
                 }
