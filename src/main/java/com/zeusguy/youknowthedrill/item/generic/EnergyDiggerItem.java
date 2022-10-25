@@ -202,93 +202,106 @@ public class EnergyDiggerItem extends EnergyItem {
     @Override
     public InteractionResult useOn(UseOnContext context) {
 
-        Level level = context.getLevel();
-        BlockPos blockpos = context.getClickedPos();
-        Player player = context.getPlayer();
-        BlockState blockstate = level.getBlockState(blockpos);
+        ItemStack itemstack = context.getItemInHand();
 
-        // Axe Actions
-        if (DEFAULT_ACTIONS.contains(ToolActions.AXE_STRIP) || DEFAULT_ACTIONS.contains(ToolActions.AXE_SCRAPE)
-                || DEFAULT_ACTIONS.contains(ToolActions.AXE_WAX_OFF)) {
-            Optional<BlockState> strip = Optional.ofNullable(
-                    blockstate.getToolModifiedState(context, ToolActions.AXE_STRIP, false));
-            Optional<BlockState> scrape = strip.isPresent() ? Optional.empty()
-                    : Optional.ofNullable(blockstate.getToolModifiedState(context,
-                            ToolActions.AXE_SCRAPE, false));
-            Optional<BlockState> waxOff = strip.isPresent() || scrape.isPresent() ? Optional.empty()
-                    : Optional.ofNullable(blockstate.getToolModifiedState(context,
-                            ToolActions.AXE_WAX_OFF, false));
-            ItemStack itemstack = context.getItemInHand();
-            Optional<BlockState> axeOptional = Optional.empty();
-            if (strip.isPresent() && DEFAULT_ACTIONS.contains(ToolActions.AXE_STRIP)) {
-                level.playSound(player, blockpos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);
-                axeOptional = strip;
-            } else if (scrape.isPresent() && DEFAULT_ACTIONS.contains(ToolActions.AXE_SCRAPE)) {
-                level.playSound(player, blockpos, SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
-                level.levelEvent(player, 3005, blockpos, 0);
-                axeOptional = scrape;
-            } else if (waxOff.isPresent() && DEFAULT_ACTIONS.contains(ToolActions.AXE_WAX_OFF)) {
-                level.playSound(player, blockpos, SoundEvents.AXE_WAX_OFF, SoundSource.BLOCKS, 1.0F, 1.0F);
-                level.levelEvent(player, 3004, blockpos, 0);
-                axeOptional = waxOff;
-            }
+        if (hasEnergy(itemstack)) {
+            Level level = context.getLevel();
+            BlockPos blockpos = context.getClickedPos();
+            Player player = context.getPlayer();
+            BlockState blockstate = level.getBlockState(blockpos);
 
-            if (axeOptional.isPresent()) {
-                if (player instanceof ServerPlayer) {
-                    CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger((ServerPlayer) player, blockpos, itemstack);
+            // Axe Actions
+            if (DEFAULT_ACTIONS.contains(ToolActions.AXE_STRIP) || DEFAULT_ACTIONS.contains(ToolActions.AXE_SCRAPE)
+                    || DEFAULT_ACTIONS.contains(ToolActions.AXE_WAX_OFF)) {
+                Optional<BlockState> strip = Optional.ofNullable(
+                        blockstate.getToolModifiedState(context, ToolActions.AXE_STRIP, false));
+                Optional<BlockState> scrape = strip.isPresent() ? Optional.empty()
+                        : Optional.ofNullable(blockstate.getToolModifiedState(context,
+                                ToolActions.AXE_SCRAPE, false));
+                Optional<BlockState> waxOff = strip.isPresent() || scrape.isPresent() ? Optional.empty()
+                        : Optional.ofNullable(blockstate.getToolModifiedState(context,
+                                ToolActions.AXE_WAX_OFF, false));
+                Optional<BlockState> axeOptional = Optional.empty();
+                if (strip.isPresent() && DEFAULT_ACTIONS.contains(ToolActions.AXE_STRIP)) {
+                    level.playSound(player, blockpos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);
+                    axeOptional = strip;
+                } else if (scrape.isPresent() && DEFAULT_ACTIONS.contains(ToolActions.AXE_SCRAPE)) {
+                    level.playSound(player, blockpos, SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
+                    level.levelEvent(player, 3005, blockpos, 0);
+                    axeOptional = scrape;
+                } else if (waxOff.isPresent() && DEFAULT_ACTIONS.contains(ToolActions.AXE_WAX_OFF)) {
+                    level.playSound(player, blockpos, SoundEvents.AXE_WAX_OFF, SoundSource.BLOCKS, 1.0F, 1.0F);
+                    level.levelEvent(player, 3004, blockpos, 0);
+                    axeOptional = waxOff;
                 }
 
-                level.setBlock(blockpos, axeOptional.get(), 11);
-                level.gameEvent(GameEvent.BLOCK_CHANGE, blockpos, GameEvent.Context.of(player, axeOptional.get()));
-
-                return InteractionResult.sidedSuccess(level.isClientSide);
-            }
-        }
-
-        // Shovel actions
-        if (DEFAULT_ACTIONS.contains(ToolActions.SHOVEL_FLATTEN)) {
-            if (context.getClickedFace() != Direction.DOWN) {
-                BlockState blockstate1 = blockstate.getToolModifiedState(context,
-                        net.minecraftforge.common.ToolActions.SHOVEL_FLATTEN, false);
-                BlockState blockstate2 = null;
-                if (blockstate1 != null && level.isEmptyBlock(blockpos.above())) {
-                    level.playSound(player, blockpos, SoundEvents.SHOVEL_FLATTEN, SoundSource.BLOCKS, 1.0F, 1.0F);
-                    blockstate2 = blockstate1;
-                } else if (blockstate.getBlock() instanceof CampfireBlock && blockstate.getValue(CampfireBlock.LIT)) {
-                    if (!level.isClientSide()) {
-                        level.levelEvent((Player) null, 1009, blockpos, 0);
+                if (axeOptional.isPresent()) {
+                    if (player instanceof ServerPlayer) {
+                        CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger((ServerPlayer) player, blockpos, itemstack);
                     }
 
-                    CampfireBlock.dowse(context.getPlayer(), level, blockpos, blockstate);
-                    blockstate2 = blockstate.setValue(CampfireBlock.LIT, Boolean.valueOf(false));
-                }
-
-                if (blockstate2 != null) {
-                    if (!level.isClientSide) {
-                        level.setBlock(blockpos, blockstate2, 11);
-                        level.gameEvent(GameEvent.BLOCK_CHANGE, blockpos, GameEvent.Context.of(player, blockstate2));
+                    level.setBlock(blockpos, axeOptional.get(), 11);
+                    level.gameEvent(GameEvent.BLOCK_CHANGE, blockpos, GameEvent.Context.of(player, axeOptional.get()));
+                    if (player != null) {
+                        extractEnergy(itemstack, getEnergyPerUse(itemstack), false);
                     }
 
                     return InteractionResult.sidedSuccess(level.isClientSide);
                 }
             }
-        }
 
-        // Hoe actions
-        if (DEFAULT_ACTIONS.contains(ToolActions.HOE_TILL)) {
-            BlockState toolModifiedState = level.getBlockState(blockpos).getToolModifiedState(context,
-                    net.minecraftforge.common.ToolActions.HOE_TILL, false);
-            Pair<Predicate<UseOnContext>, Consumer<UseOnContext>> pair = toolModifiedState == null ? null
-                    : Pair.of(ctx -> true, changeIntoState(toolModifiedState));
-            if (pair != null) {
-                Predicate<UseOnContext> predicate = pair.getFirst();
-                Consumer<UseOnContext> consumer = pair.getSecond();
-                if (predicate.test(context)) {
-                    level.playSound(player, blockpos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0F, 1.0F);
-                    if (!level.isClientSide) {
-                        consumer.accept(context);
+            // Shovel actions
+            if (DEFAULT_ACTIONS.contains(ToolActions.SHOVEL_FLATTEN)) {
+                if (context.getClickedFace() != Direction.DOWN) {
+                    BlockState blockstate1 = blockstate.getToolModifiedState(context,
+                            net.minecraftforge.common.ToolActions.SHOVEL_FLATTEN, false);
+                    BlockState blockstate2 = null;
+                    if (blockstate1 != null && level.isEmptyBlock(blockpos.above())) {
+                        level.playSound(player, blockpos, SoundEvents.SHOVEL_FLATTEN, SoundSource.BLOCKS, 1.0F, 1.0F);
+                        blockstate2 = blockstate1;
+                    } else if (blockstate.getBlock() instanceof CampfireBlock && blockstate.getValue(CampfireBlock.LIT)) {
+                        if (!level.isClientSide()) {
+                            level.levelEvent((Player) null, 1009, blockpos, 0);
+                        }
+
+                        CampfireBlock.dowse(context.getPlayer(), level, blockpos, blockstate);
+                        blockstate2 = blockstate.setValue(CampfireBlock.LIT, Boolean.valueOf(false));
                     }
-                    return InteractionResult.sidedSuccess(level.isClientSide);
+
+                    if (blockstate2 != null) {
+                        if (!level.isClientSide) {
+                            level.setBlock(blockpos, blockstate2, 11);
+                            level.gameEvent(GameEvent.BLOCK_CHANGE, blockpos, GameEvent.Context.of(player, blockstate2));
+                        }
+                        if (player != null) {
+                            extractEnergy(itemstack, getEnergyPerUse(itemstack), false);
+                        }
+
+                        return InteractionResult.sidedSuccess(level.isClientSide);
+                    }
+                }
+            }
+
+            // Hoe actions
+            if (DEFAULT_ACTIONS.contains(ToolActions.HOE_TILL)) {
+                BlockState toolModifiedState = level.getBlockState(blockpos).getToolModifiedState(context,
+                        net.minecraftforge.common.ToolActions.HOE_TILL, false);
+                Pair<Predicate<UseOnContext>, Consumer<UseOnContext>> pair = toolModifiedState == null ? null
+                        : Pair.of(ctx -> true, changeIntoState(toolModifiedState));
+                if (pair != null) {
+                    Predicate<UseOnContext> predicate = pair.getFirst();
+                    Consumer<UseOnContext> consumer = pair.getSecond();
+                    if (predicate.test(context)) {
+                        level.playSound(player, blockpos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0F, 1.0F);
+                        if (!level.isClientSide) {
+                            consumer.accept(context);
+                        }
+                        if (player != null) {
+                            extractEnergy(itemstack, getEnergyPerUse(itemstack), false);
+                        }
+                        
+                        return InteractionResult.sidedSuccess(level.isClientSide);
+                    }
                 }
             }
         }
