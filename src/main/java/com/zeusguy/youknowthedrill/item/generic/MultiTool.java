@@ -15,9 +15,6 @@ public class MultiTool extends AnimatedEnergyDiggerItem {
     
     public MultiTool(Properties properties, ServerConfig.DiggerItemConfig config) {
         super(properties.rarity(Rarity.EPIC).fireResistant(), config);
-        canOverclock = true;
-        AVAILABLE_MODES.add(DrillMode.SILK);
-        AVAILABLE_MODES.add(DrillMode.FORTUNE);
 
         DEFAULT_ACTIONS.add(ToolActions.PICKAXE_DIG);
         DEFAULT_ACTIONS.add(ToolActions.SHOVEL_DIG);

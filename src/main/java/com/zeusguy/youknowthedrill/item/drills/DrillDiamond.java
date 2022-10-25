@@ -13,7 +13,6 @@ public class DrillDiamond extends DrillItem {
 
     public DrillDiamond(Properties properties, ServerConfig.DiggerItemConfig config) {
         super(properties.rarity(Rarity.UNCOMMON), config);
-        canOverclock = true;
     }
     
 }

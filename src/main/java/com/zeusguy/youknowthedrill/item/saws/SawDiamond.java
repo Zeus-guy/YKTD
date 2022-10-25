@@ -13,7 +13,6 @@ public class SawDiamond extends SawItem {
 
     public SawDiamond(Properties properties, ServerConfig.DiggerItemConfig config) {
         super(properties.rarity(Rarity.UNCOMMON), config);
-        canOverclock = true;
     }
     
 }

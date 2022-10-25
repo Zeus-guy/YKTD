@@ -1,6 +1,5 @@
 package com.zeusguy.youknowthedrill.item.generic;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -77,15 +76,12 @@ public class EnergyDiggerItem extends EnergyItem {
 
     protected final Set<ToolAction> DEFAULT_ACTIONS = new ObjectOpenHashSet<>();
     protected final Set<TagKey<Block>> MINEABLE_TAGS = new ObjectOpenHashSet<>();
-    protected final List<DrillMode> AVAILABLE_MODES = new ArrayList<>();
 
     public static final String OVERCLOCKED_TAG = "overclocked";
     public static final String MODE_TAG = "mode";
     public static final String NO_MODE_TAG = "none";
     public static final String SILK_TAG = "silk";
     public static final String FORTUNE_TAG = "fortune";
-
-    protected boolean canOverclock;
 
     protected ServerConfig.DiggerItemConfig config;
 
@@ -259,7 +255,8 @@ public class EnergyDiggerItem extends EnergyItem {
                     if (blockstate1 != null && level.isEmptyBlock(blockpos.above())) {
                         level.playSound(player, blockpos, SoundEvents.SHOVEL_FLATTEN, SoundSource.BLOCKS, 1.0F, 1.0F);
                         blockstate2 = blockstate1;
-                    } else if (blockstate.getBlock() instanceof CampfireBlock && blockstate.getValue(CampfireBlock.LIT)) {
+                    } else if (blockstate.getBlock() instanceof CampfireBlock
+                            && blockstate.getValue(CampfireBlock.LIT)) {
                         if (!level.isClientSide()) {
                             level.levelEvent((Player) null, 1009, blockpos, 0);
                         }
@@ -271,7 +268,8 @@ public class EnergyDiggerItem extends EnergyItem {
                     if (blockstate2 != null) {
                         if (!level.isClientSide) {
                             level.setBlock(blockpos, blockstate2, 11);
-                            level.gameEvent(GameEvent.BLOCK_CHANGE, blockpos, GameEvent.Context.of(player, blockstate2));
+                            level.gameEvent(GameEvent.BLOCK_CHANGE, blockpos,
+                                    GameEvent.Context.of(player, blockstate2));
                         }
                         if (player != null) {
                             extractEnergy(itemstack, getEnergyPerUse(itemstack), false);
@@ -299,7 +297,7 @@ public class EnergyDiggerItem extends EnergyItem {
                         if (player != null) {
                             extractEnergy(itemstack, getEnergyPerUse(itemstack), false);
                         }
-                        
+
                         return InteractionResult.sidedSuccess(level.isClientSide);
                     }
                 }
@@ -320,7 +318,10 @@ public class EnergyDiggerItem extends EnergyItem {
     public void changeMode(ItemStack stack, Player player, boolean isConfigReversed) {
         boolean condition = player.isCrouching();
 
-        player.getLevel().playSound(null, player.getOnPos(), SoundEvents.STONE_BUTTON_CLICK_OFF, SoundSource.PLAYERS, 1F, (condition ? (isOverclocked(stack) ? 1 : 1.5F) : 1.2F));
+        if ((condition && config.overclock.get()) || (!condition && config.modes.get().size() > 1)) {
+            player.getLevel().playSound(null, player.getOnPos(), SoundEvents.STONE_BUTTON_CLICK_OFF, SoundSource.PLAYERS,
+                    1F, (condition ? (isOverclocked(stack) ? 1 : 1.5F) : 1.2F));
+        }
 
         if (isConfigReversed)
             condition = !condition;
@@ -337,15 +338,16 @@ public class EnergyDiggerItem extends EnergyItem {
 
     private void changeToolMode(ItemStack stack) {
         DrillMode curMode = getMode(stack);
-        if (AVAILABLE_MODES.contains(curMode)) {
-            setMode(stack, AVAILABLE_MODES.get((AVAILABLE_MODES.indexOf(curMode) + 1) % AVAILABLE_MODES.size()));
+        if (config.modes.get().contains(curMode.name())) {
+            setMode(stack,
+                    getDrillModeFromConfig(config.modes.get().get((config.modes.get().indexOf(curMode.name()) + 1) % config.modes.get().size())));
         } else {
-            setMode(stack, AVAILABLE_MODES.size() > 0 ? AVAILABLE_MODES.get(0) : DrillMode.NONE);
+            setMode(stack, config.modes.get().size() > 0 ? getDrillModeFromConfig(config.modes.get().get(0)) : DrillMode.NONE);
         }
     }
 
     public void setOverclock(ItemStack stack, boolean state) {
-        stack.getOrCreateTag().putBoolean(OVERCLOCKED_TAG, state && canOverclock);
+        stack.getOrCreateTag().putBoolean(OVERCLOCKED_TAG, state && config.overclock.get());
     }
 
     public boolean isOverclocked(ItemStack stack) {
@@ -360,10 +362,10 @@ public class EnergyDiggerItem extends EnergyItem {
         CompoundTag tag = stack.getOrCreateTag();
 
         if (!tag.contains(MODE_TAG)) {
-            if (AVAILABLE_MODES.isEmpty()) {
+            if (config.modes.get().isEmpty()) {
                 return DrillMode.NONE;
             } else {
-                return AVAILABLE_MODES.get(0);
+                return getDrillModeFromConfig(config.modes.get().get(0));
             }
         } else {
             // I'll admit it, this is horrifying.
@@ -377,6 +379,10 @@ public class EnergyDiggerItem extends EnergyItem {
                     return DrillMode.NONE;
             }
         }
+    }
+
+    private DrillMode getDrillModeFromConfig(String string) {
+        return DrillMode.valueOf(string);
     }
 
     @Override
@@ -455,11 +461,13 @@ public class EnergyDiggerItem extends EnergyItem {
         DrillMode mode = getMode(stack);
 
         if (mode != DrillMode.NONE) {
-            tooltip.add(Component.translatable("info." + YouKnowTheDrill.MODID + "." + mode.getTag()).withStyle(ChatFormatting.DARK_AQUA));
+            tooltip.add(Component.translatable("info." + YouKnowTheDrill.MODID + "." + mode.getTag())
+                    .withStyle(ChatFormatting.DARK_AQUA));
         }
 
         if (isOverclocked(stack)) {
-            tooltip.add(Component.translatable("info." + YouKnowTheDrill.MODID + ".overclocked").withStyle(ChatFormatting.RED));
+            tooltip.add(Component.translatable("info." + YouKnowTheDrill.MODID + ".overclocked")
+                    .withStyle(ChatFormatting.RED));
         }
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
 
@@ -469,16 +477,20 @@ public class EnergyDiggerItem extends EnergyItem {
     public List<Component> addExtraTooltips() {
         List<Component> extraTooltips = super.addExtraTooltips();
 
-        if (AVAILABLE_MODES.size() > 0) {
+        if (config.modes.get().size() > 1) {
             extraTooltips.add(
-                    appendToolKey(Component.translatable("info." + YouKnowTheDrill.MODID + ".tooltip_press").withStyle(ChatFormatting.GRAY), false)
-                            .append(Component.translatable("info." + YouKnowTheDrill.MODID + ".tooltip_modes").withStyle(ChatFormatting.GRAY)));
+                    appendToolKey(Component.translatable("info." + YouKnowTheDrill.MODID + ".tooltip_press")
+                            .withStyle(ChatFormatting.GRAY), false)
+                            .append(Component.translatable("info." + YouKnowTheDrill.MODID + ".tooltip_modes")
+                                    .withStyle(ChatFormatting.GRAY)));
         }
 
-        if (canOverclock) {
+        if (config.overclock.get()) {
             extraTooltips
-                    .add(appendToolKey(Component.translatable("info." + YouKnowTheDrill.MODID + ".tooltip_press").withStyle(ChatFormatting.GRAY), true)
-                            .append(Component.translatable("info." + YouKnowTheDrill.MODID + ".tooltip_overclocked").withStyle(ChatFormatting.GRAY)));
+                    .add(appendToolKey(Component.translatable("info." + YouKnowTheDrill.MODID + ".tooltip_press")
+                            .withStyle(ChatFormatting.GRAY), true)
+                            .append(Component.translatable("info." + YouKnowTheDrill.MODID + ".tooltip_overclocked")
+                                    .withStyle(ChatFormatting.GRAY)));
         }
 
         return extraTooltips;
@@ -488,9 +500,11 @@ public class EnergyDiggerItem extends EnergyItem {
         boolean condition = defaultCrouch;
         if (ClientConfig.isKeyReversed.get())
             condition = !condition;
-        component.append(((MutableComponent)KeyBinding.CHANGE_TOOL_MODE_KEY.getKey().getDisplayName()).withStyle(ChatFormatting.GRAY));
+        component.append(((MutableComponent) KeyBinding.CHANGE_TOOL_MODE_KEY.getKey().getDisplayName())
+                .withStyle(ChatFormatting.GRAY));
         if (condition) {
-            component.append(Component.translatable("info." + YouKnowTheDrill.MODID + ".while_shifting").withStyle(ChatFormatting.GRAY));
+            component.append(Component.translatable("info." + YouKnowTheDrill.MODID + ".while_shifting")
+                    .withStyle(ChatFormatting.GRAY));
         }
         return component;
     }
