@@ -1,0 +1,26 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " # ",
+        "PYP",
+        " / "
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:echo_shard"
+        },
+        "P": {
+            "item": "minecraft:popped_chorus_fruit"
+        },
+        "Y": {
+            "item": "youknowthedrill:netherite_electroblade"
+        },
+        "/": {
+            "item": "minecraft:end_rod"
+        }
+    },
+    "result": {
+        "item": "youknowthedrill:echo_electroblade",
+        "count": 1
+    }
+}

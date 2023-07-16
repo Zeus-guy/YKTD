@@ -1,0 +1,26 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " # ",
+        "AYA",
+        " O "
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:diamond"
+        },
+        "A": {
+            "item": "minecraft:amethyst_shard"
+        },
+        "Y": {
+            "item": "youknowthedrill:iron_electroblade"
+        },
+        "O": {
+            "item": "minecraft:obsidian"
+        }
+    },
+    "result": {
+        "item": "youknowthedrill:diamond_electroblade",
+        "count": 1
+    }
+}

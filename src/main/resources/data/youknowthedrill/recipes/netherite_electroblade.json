@@ -1,0 +1,26 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " n ",
+        "NYN",
+        " / "
+    ],
+    "key": {
+        "n": {
+            "item": "minecraft:netherite_ingot"
+        },
+        "N": {
+            "item": "minecraft:nether_brick"
+        },
+        "Y": {
+            "item": "youknowthedrill:diamond_electroblade"
+        },
+        "/": {
+            "item": "minecraft:blaze_rod"
+        }
+    },
+    "result": {
+        "item": "youknowthedrill:netherite_electroblade",
+        "count": 1
+    }
+}
